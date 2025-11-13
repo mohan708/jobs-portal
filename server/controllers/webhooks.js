@@ -3,7 +3,7 @@ import User from "../models/User.js";
 
 // Api Controller function to Manage clerk user with database
 
-const clerkWebhooks = async (req,res)=>{
+export const clerkWebhooks = async (req,res)=>{
 
     try {
         // create a svik instance with clerk webhook secret.
@@ -74,4 +74,3 @@ const clerkWebhooks = async (req,res)=>{
 
 }
 
-export default clerkWebhooks
