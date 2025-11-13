@@ -9,6 +9,7 @@ export const clerkWebhooks = async (req,res)=>{
         // create a svik instance with clerk webhook secret.
 
          const whook = new Webhook (process.env.CLERK_WEBHOOK_SECRET)
+         console.log("🟢 Clerk webhook endpoint loaded");
 
         //  verifying Headers
 
@@ -21,6 +22,11 @@ export const clerkWebhooks = async (req,res)=>{
         // getting data from request body 
 
         const {data, type } = req.body
+        console.log("🟢 Incoming webhook event:", req.body);
+        console.log("🟢 Incoming webhook event:", data);
+        console.log("🟢 Incoming webhook event:", type);
+
+
 
         // Switch case for different events
 
@@ -29,7 +35,7 @@ export const clerkWebhooks = async (req,res)=>{
 
                 const userData = {
                     _id:data.id,
-                    email: data.email.addressses[0].email_adsress,
+                     email: data.email_addresses[0].email_address,
                     name : data.first_name + " " + data.last_name,
                     image: data.image_url,
                     resume: ''
