@@ -23,7 +23,7 @@ app.use(express.json())
 app.get('/', (req,res)=>res.send("api working"))
 
 app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
+//   throw new Error("My first Sentry error!");
 });
 app.post('/webhooks',clerkWebhooks)
 
