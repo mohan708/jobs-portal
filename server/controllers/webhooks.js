@@ -36,9 +36,9 @@ export const clerkWebhooks = async (req,res)=>{
                 const userData = {
                     _id:data.id,
                      email: data.email_addresses[0].email_address,
-                    name : data.first_name + " " + data.last_name,
+                     name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
                     image: data.image_url,
-                    resume: ''
+                    resume: "",
                 }
 
                 await User.create(userData)
@@ -52,7 +52,7 @@ export const clerkWebhooks = async (req,res)=>{
 
                  const userData = {
                     _id:data.id,
-                    email: data.email.addresses[0].email_address,
+                    email: data.email_addresses[0].email_address,
                     name : data.first_name + " " + data.last_name,
                     image: data.image_url,
                     resume: ''
@@ -64,7 +64,7 @@ export const clerkWebhooks = async (req,res)=>{
 
             }
 
-            case "user.delete" :{
+            case "user.deleted" :{
                 await User.findByIdAndDelete(data.id)
                 res.json({})
                 break;

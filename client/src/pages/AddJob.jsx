@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Quill from 'quill';
 import { JobCategories, JobLocations } from '../assets/assets';
 import JobListing from '../components/JobListing';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
 
 const AddJob = () => {
 
@@ -14,8 +17,46 @@ const AddJob = () => {
     const editorRef = useRef(null)
     const quillRef = useRef(null) 
 
+    const {backend_url,companyToken} = useContext(AppContext)
+    
+
+    const onSubmitHandler = async(e)=>{
+        e.preventDefault();
+        // console.log('Form submission started...');
+
+        try {
+            
+            const description = quillRef.current.root.innerHTML
+            const {data} = await axios.post(backend_url+'/api/company/post-job',
+                {
+                    title,description,location,salary,category,level
+                }, {headers: {token:companyToken}} )
+
+                //  console.log("sucess",data.message)
+
+                if(data.success){
+                    toast.success(data.message)
+                    
+                    setTitle('')
+                    setSalary('')
+                    quillRef.current.root.innerHTML = ""
+
+                    // console.log("sucess",data)
+                }
+                else{
+                    // console.log("sucess",data.message)
+                    toast.error(data.message)
+                }
+            
+        } catch (error) {
+            toast.error(error)
+        }
+        
+    }
+
     useEffect(()=>{
         // initiate quill only once
+
 
         if(!quillRef.current && editorRef.current){
            quillRef.current = new Quill(editorRef.current ,{
@@ -25,7 +66,7 @@ const AddJob = () => {
     },[])
 
   return (
-      <form className='conatiner p-4 flex flex-col w-full items-start gap-3'>
+      <form onSubmit={onSubmitHandler}  className='conatiner p-4 flex flex-col w-full items-start gap-3'>
         <div className='w-full '>
             <p className='mb-2'>Job Title</p>
             <input type="text" placeholder='Type here' 
@@ -37,7 +78,7 @@ const AddJob = () => {
 
         <div  className='w-full max-w-lg'>
             <p className='my-2'>Job Description</p>
-            <div ref={editorRef}></div>
+            <div className='rich-text' ref={editorRef}></div>
         </div>
 
         <div className='flex flex-col sm:flex-row gap-2 w-full sm:gap-8'>
@@ -55,7 +96,7 @@ const AddJob = () => {
                 <p className='mb-2'>Job Location</p>
                 <select  className='w-full  px-3 py-2 border-2 border-gray-300 rounded' onChange={e => setLocation(e.target.value)}>
                     {JobLocations.map((location,index)=>(
-                        <option c key={index} value={location}>{location}</option>
+                        <option  key={index} value={location}>{location}</option>
                     ))}
 
                 </select>
@@ -73,10 +114,10 @@ const AddJob = () => {
 
         <div>
             <p className='mb-2'>Job salary</p>
-            <input min={0} className='w-full px-3   py-2 border-2 border-gray-300 rounded sm:w-[120px]'   type="Number" placeholder='2500' onChange={e => setSalary(e.target.value)} />
+            <input min={0} className='w-full px-3   py-2 border-2 border-gray-300 rounded sm:w-[120px]'   placeholder='2500' value={salary}   type="number"  onChange={e => setSalary(e.target.value)} />
         </div>
 
-       <button className=' py-3 w-28 mt-4 bg-black text-white rounded'>Add</button>
+       <button type="submit" className=' py-3 w-28 mt-4 bg-black text-white rounded'>Add</button>
 
       </form>
   )

@@ -32,7 +32,7 @@ const JobListing = () => {
     useEffect(()=>{
 
       const matchCategory = job =>  selectedCategories.length === 0 || selectedCategories.includes(job.category);
-      console.log("selectedCategories ", selectedCategories);
+      // console.log("selectedCategories ", selectedCategories);
       const matchLocation = job => selectedLocations.length === 0 || selectedLocations.includes(job.location);
 
       const matchTitle = job => searchFilter.title === "" || job.title.toLowerCase().includes(searchFilter.title.toLowerCase());
@@ -44,7 +44,7 @@ const JobListing = () => {
 
      
 
-      console.log("actual data " , newFilteredJobs);
+      // console.log("actual data " , newFilteredJobs);
 
       setFilteredJobs(newFilteredJobs)
       setCurrentPage(1)

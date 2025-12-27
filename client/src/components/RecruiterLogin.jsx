@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const RecruiterLogin = () => {
 
-  const {setShowRecruiterLogin} = useContext(AppContext)
+   const navigate = useNavigate();
+
+    const {setShowRecruiterLogin, backend_url, setCompanyToken, setCompanyData} = useContext(AppContext)
+    
     const [state,setState] = useState('Login')
     const [name,setName] =useState('')
     const [password,setPassword] =useState('')
@@ -13,12 +19,67 @@ const RecruiterLogin = () => {
     const [image,setImage] = useState(false);
     const [isTextDataSubmitted,setIsTextDataSubmitted] = useState(false);
 
-    const onSubmitHandler = async (e)=>{
+    const onSubmitHandler = async(e)=>{
       e.preventDefault()
+      console.log(backend_url)
+      
 
       if(state == 'Sign Up' && !isTextDataSubmitted ){
-        setIsTextDataSubmitted(true)
+       return setIsTextDataSubmitted(true)
       }
+
+      try {
+
+        if(state == 'Login'){
+          const {data} = await axios.post(backend_url+'/api/company/login',{email,password})
+
+          if(data.success){
+          //  console.log('token will be : ',data);
+            setCompanyData(data.company)
+          setCompanyToken(data.token)
+           localStorage.setItem('companyToken', data.token)
+          setShowRecruiterLogin(false)
+          toast.success(data.message)
+          navigate('/dashboard')  
+          }
+          else{
+            console.log('token will be : ',data);
+            toast.error(data.message)
+          }
+          
+                
+        }
+        else {
+
+          const formData = new FormData()
+
+          formData.append('name',name)
+          formData.append('password',password)
+          formData.append('email',email)
+          formData.append('image',image)
+
+           const {data} = await axios.post(backend_url+'/api/company/register',formData)
+
+          if(data.success){
+          //  console.log('token will be : ',data);
+            setCompanyData(data.company)
+          setCompanyToken(data.token)
+           localStorage.setItem('companyToken', data.token)
+          setShowRecruiterLogin(false)
+          toast.success(data.message)
+          navigate('/dashboard')  
+          }
+          else{
+            console.log('token will be : ',data);
+            toast.error(data.message)
+          }
+        
+        }
+        
+      } catch (error) {
+        toast.error(error)
+      }
+
     }
 
     useEffect(()=>{
