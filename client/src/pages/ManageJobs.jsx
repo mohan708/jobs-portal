@@ -97,12 +97,11 @@ const ManageJobs = () => {
                 </tbody>
             </table>
 
-            <div className='mt-4 flex justify-end'>
+            <div className='mt-5 flex justify-end'>
                 <button onClick={()=>navigate('/dashboard/add-job')}  className='bg-black cursor-pointer text-white py-2 px-4 rounded'>Add new Job</button>
             </div>
         </div>
     </div>
   ) : <Loading /> 
 }
-
 export default ManageJobs
