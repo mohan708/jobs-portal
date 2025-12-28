@@ -9,7 +9,7 @@ import Loading from '../components/Loading'
 const ViewApplication = () => {
 
     const {backend_url,companyToken} = useContext(AppContext)
-    const [applicants, setApplicants] = useState(false)
+    const [applicants, setApplicants] = useState([])
 
     // function to fetch company job application data 
 
@@ -86,7 +86,7 @@ const ViewApplication = () => {
                                     <span>{applicant.userId?.name}</span>
                                     </td>
                                 <td className='py-2 px-4  max-sm:hidden'>{applicant.jobId?.title}</td>
-                                <td className='py-2 px-4   max-sm:hidden'>{applicant.jobId.location}</td>
+                                <td className='py-2 px-4   max-sm:hidden'>{applicant.jobId?.location}</td>
                                 <td className='py-2 px-4   '>
                                     <a href={applicant.userId?.resume || '#'} className='bg-blue-50 text-blue-400 px-3 py-1 rounded inline-flex gap-2 items-center'  target='_blank'>
                                         Resume <img src={assets.resume_download_icon} alt="" />
