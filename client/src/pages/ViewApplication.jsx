@@ -82,13 +82,13 @@ const ViewApplication = () => {
                             <tr className='text-gray-700 border-gray-200 border-b' key={index}>
                                 <td className='py-2 px-4  text-center'>{index+1}</td>
                                 <td className='py-2 px-4  text-center flex'>
-                                    <img className='w-10 h-10 rounded-ful mr-3 max-sm:hidden' src={applicant.userId.image} alt="" />
-                                    <span>{applicant.userId.name}</span>
+                                    <img className='w-10 h-10 rounded-ful mr-3 max-sm:hidden' src={applicant.userId?.image || assets.user_icon} alt="" />
+                                    <span>{applicant.userId?.name}</span>
                                     </td>
-                                <td className='py-2 px-4  max-sm:hidden'>{applicant.jobId.title}</td>
+                                <td className='py-2 px-4  max-sm:hidden'>{applicant.jobId?.title}</td>
                                 <td className='py-2 px-4   max-sm:hidden'>{applicant.jobId.location}</td>
                                 <td className='py-2 px-4   '>
-                                    <a href={applicant.userId.resume} className='bg-blue-50 text-blue-400 px-3 py-1 rounded inline-flex gap-2 items-center'  target='_blank'>
+                                    <a href={applicant.userId?.resume || '#'} className='bg-blue-50 text-blue-400 px-3 py-1 rounded inline-flex gap-2 items-center'  target='_blank'>
                                         Resume <img src={assets.resume_download_icon} alt="" />
                                     </a>
                                 </td>
@@ -100,15 +100,12 @@ const ViewApplication = () => {
                                             <button onClick={()=>changeJobApplicationStatus(applicant._id,'Accepted')} className='block w-full text-left px-4 py-2 text-blue-500 hover:bg-gray-100'>Accept</button>
                                             <button onClick={()=>changeJobApplicationStatus(applicant._id,'Rejected')}  className='block w-full text-left px-4 py-2 text-500 hover:bg-gray-100'>Reject</button>
                                         </div>
-                                    </div>:
+                                    </div> :
 
                                     <div>
                                         {applicant.status}
                                     </div>
-
-                                     }
-
-                                    
+                                     }                                   
                                 </td>
                             </tr>
                         ))
