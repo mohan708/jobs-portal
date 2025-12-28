@@ -18,6 +18,7 @@ const Application = ()=> {
   const [resume,setResume] =useState(null); 
 
   const {backend_url,userData,userApplications, fetchUserData ,  fetchUserApplication} = useContext(AppContext)
+ 
 
   const updateResume = async()=>{
 
@@ -46,6 +47,7 @@ const Application = ()=> {
   }
 
   useEffect(()=>{
+     console.log(userApplications)
       if(user){
        
         fetchUserApplication();

@@ -12,6 +12,9 @@ const ManageJobs = () => {
     const navigate = useNavigate();
 
     const[jobs,setJobs]= useState(false)
+    console.log(jobs)
+    console.log(jobs[0].date)
+
 
      
     const {backend_url,companyToken} = useContext(AppContext)
