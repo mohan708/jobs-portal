@@ -47,7 +47,7 @@ const Application = ()=> {
   }
 
   useEffect(()=>{
-     console.log(userApplications)
+    
       if(user){
        
         fetchUserApplication();
@@ -73,7 +73,7 @@ const Application = ()=> {
         </>
         :
         <div className='flex gap-2'> 
-          <a target='_blank' href= {userData.resume} className='bg-blue-100 tex-blue-600 px-4 py-2 rounded-lg cursor-pointer '>
+          <a target='_blank' href= {userData?.resume} className='bg-blue-100 tex-blue-600 px-4 py-2 rounded-lg cursor-pointer '>
             Resume
           </a>
           <button onClick={()=>setIsEdit(true)}  className='bg-white tex-gray-600 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer'>

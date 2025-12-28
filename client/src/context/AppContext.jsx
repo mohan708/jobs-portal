@@ -2,77 +2,77 @@ import { createContext, useEffect, useState } from "react";
 import { jobsData } from "../assets/assets";
 import { toast } from "react-toastify";
 import axios from "axios";
-import {useAuth, useUser} from '@clerk/clerk-react'
+import { useAuth, useUser } from '@clerk/clerk-react'
 // import { set } from "mongoose";
 
 export const AppContext = createContext()
 
-export const AppContextProvider = (props)=>{
+export const AppContextProvider = (props) => {
 
     const backend_url = import.meta.env.VITE_BACKEND_URL
-    
-    const {user} = useUser()
-    const {getToken} = useAuth()
 
-    const [searchFilter,setSearchFilter] = useState(
+    const { user } = useUser()
+    const { getToken } = useAuth()
+
+    const [searchFilter, setSearchFilter] = useState(
         {
-            title : "",
-            location : "",
+            title: "",
+            location: "",
         }
     )
 
-    const [isSearched,setIsSearched] =useState(false)
+    const [isSearched, setIsSearched] = useState(false)
 
-    const [jobs,setJobs] = useState([])
+    const [jobs, setJobs] = useState([])
     // fetch jobs data 
 
-    const [showRecruiterLogin,setShowRecruiterLogin] = useState(false)
+    const [showRecruiterLogin, setShowRecruiterLogin] = useState(false)
 
     // company data
 
-    const [companyToken,setCompanyToken] = useState(null);
-    const [companyData,setCompanyData] = useState(null);
+    const [companyToken, setCompanyToken] = useState(null);
+    const [companyData, setCompanyData] = useState(null);
 
-    const [userData,setUserData] = useState(null)
-    const [userApplications,setUserApplication] = useState([]);
+    const [userData, setUserData] = useState(null)
+    const [userApplications, setUserApplication] = useState([]);
 
-    const fetchJobs =async ()=>{
-       
+    const fetchJobs = async () => {
+
         try {
 
-            const {data} = await  axios.get(backend_url+'/api/jobs')
+            const { data } = await axios.get(backend_url + '/api/jobs')
 
-            if(data.success){
+            if (data.success) {
                 setJobs(data.jobs)
-                console.log("Jobs Data :", data.jobs)
+                // console.log("Jobs Data :", data.jobs)
             }
-            else{
+            else {
                 toast.error(data.message)
             }
 
-            
+
         } catch (error) {
             toast.error(error.message)
-            
+
         }
     }
 
     // fetch company data
 
-    const fetchCompanyData = async()=>{
+    const fetchCompanyData = async () => {
         try {
 
-            const {data} = await axios.get(backend_url+'/api/company/company',{headers:{token:companyToken}})
+            const { data } = await axios.get(backend_url + '/api/company/company', { headers: { token: companyToken } })
             // console.log("Company Data :", data)
 
-            if(data.success){
+            if (data.success) {
                 setCompanyData(data.company)
                 // console.log("Company Data :", data)
             }
-            else{
+            else {
                 toast.error(data.message)
             }
-            
+
         } catch (error) {
             toast.error(error.message)
         }
@@ -80,19 +80,19 @@ export const AppContextProvider = (props)=>{
 
     // function to fetch user data
 
-    const fetchUserData = async()=>{
+    const fetchUserData = async () => {
         try {
-            
+
             const token = await getToken();
 
-            const {data} = await axios.get(backend_url+'/api/users/user',
-                {headers:{Authorization:`Bearer ${token}`}}
+            const { data } = await axios.get(backend_url + '/api/users/user',
+                { headers: { Authorization: `Bearer ${token}` } }
             )
 
-            if(data.success){
+            if (data.success) {
                 setUserData(data.user)
             }
-            else{
+            else {
                 toast.error(data.message)
             }
 
@@ -104,64 +104,63 @@ export const AppContextProvider = (props)=>{
 
     // function to fetch users applied application data
 
-    const fetchUserApplication = async()=>{
+    const fetchUserApplication = async () => {
         try {
 
             const token = await getToken()
 
-            const {data} = await axios.get(backend_url+'/api/users/applications',
-                {headers:{Authorization:`Bearer ${token}`}}
+            const { data } = await axios.get(backend_url + '/api/users/applications',
+                { headers: { Authorization: `Bearer ${token}` } }
             )
 
-            if(data.success){
-                setUserApplication(data.applications)    
-            }   
-            else{
+            if (data.success) {
+                setUserApplication(data.applications)
+            }
+            else {
                 toast.error(data.message)
-            }         
+            }
         } catch (error) {
             toast.error(error.message)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchJobs()
         // fetchCompanyData()
 
         const storedCompanyToken = localStorage.getItem('companyToken')
-        if(storedCompanyToken)
-        {
+        if (storedCompanyToken) {
             setCompanyToken(storedCompanyToken)
         }
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        if(companyToken){
-             fetchCompanyData()
+    useEffect(() => {
+        if (companyToken) {
+            fetchCompanyData()
         }
-       
-    },[companyToken])
 
-    useEffect(()=>{
-        if(user){
+    }, [companyToken])
+
+    useEffect(() => {
+        if (user) {
             fetchUserData()
             fetchUserApplication()
         }
-    },[user])
+    }, [user])
 
     const value = {
         setSearchFilter, searchFilter,
         setIsSearched, isSearched,
         jobs, setJobs,
-        showRecruiterLogin,setShowRecruiterLogin,
-        companyToken,setCompanyToken,
-        companyData,setCompanyData,
+        showRecruiterLogin, setShowRecruiterLogin,
+        companyToken, setCompanyToken,
+        companyData, setCompanyData,
         backend_url,
-        userData,setUserData,
-        userApplications,setUserApplication,
+        userData, setUserData,
+        userApplications, setUserApplication,
         fetchUserData,
         fetchUserApplication
-        
+
     }
 
     return (<AppContext.Provider value={value}>
