@@ -125,7 +125,7 @@ export const getCompanypostJob = async(req,res)=>{
             location,
             salary,
             companyId,
-            date:new Date(),
+            date:Date.now(),
             level,
             category
         })
