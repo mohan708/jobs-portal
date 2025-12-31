@@ -12,16 +12,26 @@ export const clerkWebhooks = async (req,res)=>{
         //  console.log("🟢 Clerk webhook endpoint loaded");
 
         //  verifying Headers
+        const payload = req.body.toString("utf8");
 
-        await whook.verify(JSON.stringify(req.body),{
-            "svix-id" : req.headers["svix-id"],
-            "svix-timestamp" : req.headers["svix-timestamp"],
-            "svix-signature" : req.headers["svix-signature"]
-        })
+        // await whook.verify(JSON.stringify(req.body),{
+        //     "svix-id" : req.headers["svix-id"],
+        //     "svix-timestamp" : req.headers["svix-timestamp"],
+        //     "svix-signature" : req.headers["svix-signature"]
+        // })
+
+          whook.verify(payload, {
+      "svix-id": req.headers["svix-id"],
+      "svix-timestamp": req.headers["svix-timestamp"],
+      "svix-signature": req.headers["svix-signature"],
+    });
 
         // getting data from request body 
 
-        const {data, type } = req.body
+        // const {data, type } = req.body
+
+            const { data, type } = JSON.parse(payload);
+
         // console.log("🟢 Incoming webhook event:", req.body);
         // console.log("🟢 Incoming webhook event:", data);
         // console.log("🟢 Incoming webhook event:", type);

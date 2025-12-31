@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-@layers base {
+@layer base {
   /* Custom base styles can go here */
   html{
-    ::scroll-behavior: smooth;
+    scroll-behavior: smooth;
   }
 }
 

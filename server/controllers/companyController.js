@@ -45,7 +45,7 @@ export const registerCompany = async (req, res) => {
                 image: company.image
             },
             token: generateToken(company._id),
-            message: 'Sucessfully Regiter '
+            message: 'Sucessfully Regiter'
         })
     }
     catch (error) {
