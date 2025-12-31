@@ -4,7 +4,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './config/db.js'
 import * as Sentry from "@sentry/node"
-import {clerkWebhooks} from './controllers/webhooks.js'
+// import {clerkWebhooks} from './controllers/webhooks.js'
 import companyRoutes from './routes/companyRoutes.js'
 import {connectCloudinary} from './config/cloudinarys.js'
 import jobRoutes from './routes/jobRoutes.js'
@@ -28,13 +28,6 @@ await connectCloudinary()
 // middleware 
 
 app.use(cors())
-
-app.post(
-  "/webhooks",
-  express.raw({ type: "application/json" }),
-  clerkWebhooks
-);
-
 app.use(express.json())
 
 // Apply `clerkMiddleware()` to all routes
@@ -60,7 +53,7 @@ Sentry.setupExpressErrorHandler(app);
 
 // Optional fallthrough error handler
 
-
+console.log("🟢 Sentry error handler configured.");
 
 
 app.listen(PORT, ()=>{
