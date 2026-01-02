@@ -11,6 +11,7 @@ import jobRoutes from './routes/jobRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import {clerkMiddleware} from '@clerk/express'
 import { requireAuth } from "@clerk/express";
+import { clerkWebhooks } from './controllers/webhooks.js'
 
 
 
