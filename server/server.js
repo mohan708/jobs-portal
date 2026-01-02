@@ -26,6 +26,7 @@ await connectCloudinary()
 
 
 // middleware 
+app.post('/webhooks', express.raw({type: 'application/json', limit: '5mb'}), clerkWebhooks)
 
 app.use(cors())
 app.use(express.json())
@@ -39,7 +40,8 @@ app.get('/', (req,res)=>res.send("api working"))
 app.get("/debug-sentry", function mainHandler(req, res) {
 //   throw new Error("My first Sentry error!");
 });
-// app.post('/webhooks',clerkWebhooks)
+
+app.post('/webhooks',clerkWebhooks)
 app.use('/api/company', companyRoutes)
 app.use('/api/jobs',jobRoutes)
 app.use('/api/users',userRoutes)
