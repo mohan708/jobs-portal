@@ -20,34 +20,19 @@ export const clerkWebhooks = async (req, res) => {
     const { data, type } = evt;
 
     switch (type) {
-      case "user.created": {
-        const userData = {
-          _id: data.id,
-          email: data.email_addresses?.[0]?.email_address,
-          name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
-          image: data.image_url,
-          resume: ""
-        }
-        await User.create(userData);
-        res.json({})
-            break;
-            
-      }
-
+      case "user.created":
       case "user.updated": {
-        const userData = {
-          _id: data.id,
-          email: data.email_addresses?.[0]?.email_address,
-          name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
-          image: data.image_url,
-          
-        };
-
-        await User.findByIdAndUpdate(data.id, userData, {
-          upsert: true,
-          new: true,
-        });
-
+        await User.findByIdAndUpdate(
+          data.id,
+          {
+            _id: data.id,
+            email: data.email_addresses?.[0]?.email_address,
+            name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+            image: data.image_url,
+            resume: "",
+          },
+          { upsert: true, new: true }
+        );
         break;
       }
 
@@ -55,13 +40,13 @@ export const clerkWebhooks = async (req, res) => {
         await User.findByIdAndDelete(data.id);
         break;
 
-      default:  
+      default:
         break;
     }
 
-    return res.status(200).json({ success: true , message: "sucess"});
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Clerk webhook error:", error);
+    console.error("❌ Clerk webhook error:", error.message);
     return res.status(400).json({ success: false, message: error.message });
   }
 };

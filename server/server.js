@@ -46,7 +46,7 @@ app.use('/api/company', companyRoutes)
 app.use('/api/jobs',jobRoutes)
 app.use('/api/users',userRoutes)
 
-// port 8080
+
 
 const PORT = process.env.PORT || 8080
 
